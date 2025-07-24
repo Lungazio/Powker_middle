@@ -4,6 +4,7 @@ class GameRoomClient {
         this.socket = null;
         this.gameId = null;
         this.gameState = null;
+        this.abilitySelectionManager = null;
         
         this.init();
     }
@@ -20,6 +21,10 @@ class GameRoomClient {
 
         this.initializeSocket();
         this.bindEvents();
+        
+        // Initialize ability selection manager
+        this.abilitySelectionManager = new AbilitySelectionManager(this);
+        
         this.joinGame();
     }
 
@@ -86,13 +91,22 @@ class GameRoomClient {
             }
         });
 
-        // Ability events
-        this.socket.on('ability_used', (data) => {
-            this.addActionLog(data.Message, 'player-action');
-            if (data.GameState) {
-                this.gameState = data.GameState;
-                this.updateGameDisplay();
-            }
+        // Ability events (handled by Flask backend)
+        this.socket.on('ability_result', (data) => {
+            this.addActionLog(data.message, 'player-action');
+            // Game state will be updated via separate game_state_update event
+        });
+
+        this.socket.on('ability_choice_required', (data) => {
+            this.abilitySelectionManager.handleAbilityChoiceRequired(data);
+        });
+
+        this.socket.on('ability_error', (data) => {
+            this.addActionLog(`Ability error: ${data.error}`, 'system');
+        });
+
+        this.socket.on('ability_cancelled', (data) => {
+            this.addActionLog(data.message, 'system');
         });
     }
 
@@ -232,14 +246,16 @@ class GameRoomClient {
                 lastAction = '<div class="player-action all-in">All In</div>';
             }
 
+            // Format the player name with funds in parentheses
+            const playerNameWithFunds = `${player.Name} ($${player.Balance})`;
+
             playerItem.innerHTML = `
                 <div class="player-turn-info">
-                    <div class="player-turn-name">${player.Name}</div>
+                    <div class="player-turn-name">${playerNameWithFunds}</div>
                     <div class="player-turn-status">${statusText}</div>
                 </div>
                 <div class="player-turn-stats">
-                    <div class="player-balance">${player.Balance}</div>
-                    <div class="player-bet">Bet: ${player.CurrentBet}</div>
+                    <div class="player-bet">Bet: $${player.CurrentBet}</div>
                     ${lastAction}
                 </div>
             `;
@@ -379,6 +395,9 @@ class GameRoomClient {
                     this.useAbility(ability.Type);
                 });
                 
+                // Add ability type as data attribute for CSS styling
+                abilityEl.setAttribute('data-ability', ability.Type.toLowerCase());
+                
                 abilitiesContainer.appendChild(abilityEl);
             });
         } else {
@@ -388,8 +407,12 @@ class GameRoomClient {
 
     useAbility(abilityType) {
         this.addActionLog(`Using ${abilityType} ability...`, 'player-action');
-        // This will be implemented when we add ability functionality
-        console.log(`Using ability: ${abilityType}`);
+        
+        // Send ability request to Flask backend (no parameters initially)
+        this.socket.emit('use_ability', {
+            gameId: this.gameId,
+            ability: abilityType.toLowerCase()
+        });
     }
 
     addActionLog(message, type = 'system') {
@@ -406,9 +429,9 @@ class GameRoomClient {
         // Auto-scroll to bottom
         actionsLog.scrollTop = actionsLog.scrollHeight;
         
-        // Keep only last 50 messages
+        // Keep only last 20 messages (reduced from 50)
         const items = actionsLog.querySelectorAll('.action-item');
-        if (items.length > 50) {
+        if (items.length > 20) {
             items[0].remove();
         }
     }

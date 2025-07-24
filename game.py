@@ -4,6 +4,8 @@ import logging
 from flask_socketio import emit, join_room, leave_room
 from flask import request
 import os
+from abilities import register_ability_events
+
 
 logger = logging.getLogger(__name__)
 
@@ -126,6 +128,10 @@ def start_poker_game(game_id):
 
 def register_game_events(socketio):
     """Register game-related WebSocket events"""
+    
+    # Register ability events
+    register_ability_events(socketio)
+    logger.info("Abilities module registered successfully")
     
     @socketio.on('join_game')
     def handle_join_game(data):

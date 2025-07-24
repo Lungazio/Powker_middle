@@ -48,10 +48,10 @@
     /* Takes up one column */
 }
 
-/* Turn Indicator Styles */
+/* Turn Indicator Styles - Compact Version */
 .turn-indicator-section {
     background: white;
-    padding: 20px;
+    padding: 15px 20px; /* Reduced padding */
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
@@ -60,19 +60,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 12px; /* Reduced margin */
 }
 
 .turn-header h3 {
     margin: 0;
+    font-size: 1.1em; /* Slightly smaller */
 }
 
 .current-bet-display {
-    font-size: 16px;
+    font-size: 14px; /* Reduced font size */
     font-weight: 600;
     color: #e74c3c;
     background: #f8f9fa;
-    padding: 8px 12px;
+    padding: 6px 10px; /* Reduced padding */
     border-radius: 6px;
     border: 2px solid #e74c3c;
 }
@@ -80,21 +81,21 @@
 .players-turn-list {
     display: flex;
     flex-direction: row;
-    gap: 15px;
+    gap: 12px; /* Reduced gap */
     overflow-x: auto;
-    padding: 5px 0;
+    padding: 3px 0; /* Reduced padding */
 }
 
 .player-turn-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 12px 15px;
+    padding: 8px 12px; /* Reduced padding */
     border-radius: 8px;
     background: #f8f9fa;
     border: 2px solid #dee2e6;
     transition: all 0.3s ease;
-    min-width: 140px;
+    min-width: 120px; /* Reduced width */
     flex-shrink: 0;
 }
 
@@ -127,18 +128,20 @@
     align-items: center;
     text-align: center;
     width: 100%;
+    margin-bottom: 6px; /* Reduced margin */
 }
 
 .player-turn-name {
     font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 4px;
+    font-size: 13px; /* Reduced font size */
+    margin-bottom: 2px;
+    line-height: 1.2;
 }
 
 .player-turn-status {
-    font-size: 12px;
+    font-size: 11px; /* Reduced font size */
     color: #6c757d;
-    margin-bottom: 8px;
+    margin-bottom: 4px; /* Reduced margin */
 }
 
 .player-turn-item.current-turn .player-turn-status {
@@ -156,6 +159,7 @@
     align-items: center;
     text-align: center;
     width: 100%;
+    gap: 2px; /* Small gap between stats */
 }
 
 .player-balance {
@@ -170,10 +174,9 @@
 }
 
 .player-bet {
-    font-size: 12px;
+    font-size: 11px; /* Reduced font size */
     color: #e74c3c;
     font-weight: 500;
-    margin-bottom: 4px;
 }
 
 .player-turn-item.all-in .player-bet {
@@ -191,14 +194,15 @@
 }
 
 .player-action {
-    font-size: 10px;
-    padding: 2px 6px;
+    font-size: 9px; /* Reduced font size */
+    padding: 1px 4px; /* Reduced padding */
     border-radius: 3px;
     background: #e9ecef;
     color: #495057;
     text-transform: uppercase;
     font-weight: 500;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px; /* Reduced letter spacing */
+    margin-top: 2px;
 }
 
 .player-action.call {
@@ -333,7 +337,7 @@
     color: #212529;
 }
 
-/* Compact Abilities */
+/* Enhanced Ability Cards in Game */
 .abilities-subsection .abilities-list {
     display: flex;
     flex-direction: column;
@@ -343,29 +347,89 @@
 .abilities-subsection .ability-card {
     background: linear-gradient(135deg, #9b59b6, #8e44ad);
     color: white;
-    padding: 8px 12px;
-    border-radius: 6px;
+    padding: 10px 14px;
+    border-radius: 8px;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: left;
+    position: relative;
+    overflow: hidden;
 }
 
 .abilities-subsection .ability-card:hover {
     background: linear-gradient(135deg, #8e44ad, #7d3c98);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(142, 68, 173, 0.4);
+}
+
+.abilities-subsection .ability-card:active {
     transform: translateY(-1px);
+}
+
+.abilities-subsection .ability-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.abilities-subsection .ability-card:hover::before {
+    transform: translateX(100%);
 }
 
 .abilities-subsection .ability-name {
     font-weight: 600;
-    font-size: 13px;
-    margin-bottom: 2px;
+    font-size: 14px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .abilities-subsection .ability-description {
-    font-size: 11px;
+    font-size: 12px;
     opacity: 0.9;
-    line-height: 1.3;
+    line-height: 1.4;
+}
+
+/* Ability Icons */
+.ability-name::before {
+    content: '✨';
+    font-size: 16px;
+}
+
+.ability-card[data-ability="peek"] .ability-name::before {
+    content: '👁️';
+}
+
+.ability-card[data-ability="burn"] .ability-name::before {
+    content: '🔥';
+}
+
+.ability-card[data-ability="manifest"] .ability-name::before {
+    content: '🎯';
+}
+
+.ability-card[data-ability="trashman"] .ability-name::before {
+    content: '♻️';
+}
+
+.ability-card[data-ability="deadman"] .ability-name::before {
+    content: '💀';
+}
+
+.ability-card[data-ability="chaos"] .ability-name::before {
+    content: '🌪️';
+}
+
+.ability-card[data-ability="yoink"] .ability-name::before {
+    content: '🎭';
 }
 
 .abilities-subsection .no-abilities {
@@ -376,10 +440,10 @@
     font-size: 13px;
 }
 
-/* Actions Log Section */
+/* Actions Log Section - Compact */
 .actions-section {
     background: white;
-    padding: 25px;
+    padding: 20px; /* Reduced from 25px */
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
@@ -410,19 +474,19 @@
 }
 
 .actions-log {
-    max-height: 300px;
+    max-height: 120px; /* Reduced from 300px to show ~4 entries */
     overflow-y: auto;
     border: 1px solid #ecf0f1;
     border-radius: 8px;
-    padding: 15px;
+    padding: 10px; /* Reduced padding */
     background: #f8f9fa;
 }
 
 .action-item {
-    padding: 8px 0;
+    padding: 6px 0; /* Reduced from 8px */
     border-bottom: 1px solid #e9ecef;
-    font-size: 14px;
-    line-height: 1.4;
+    font-size: 13px; /* Reduced from 14px */
+    line-height: 1.3; /* Reduced line height */
 }
 
 .action-item:last-child {
@@ -483,6 +547,24 @@
         padding: 12px 16px;
         font-size: 14px;
     }
+    
+    /* Turn indicator responsive adjustments */
+    .turn-indicator-section {
+        padding: 12px 15px;
+    }
+    
+    .player-turn-item {
+        min-width: 100px;
+        padding: 6px 8px;
+    }
+    
+    .player-turn-name {
+        font-size: 12px;
+    }
+    
+    .players-turn-list {
+        gap: 8px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -503,5 +585,22 @@
     
     h3 {
         font-size: 1.1em;
+    }
+    
+    /* Turn indicator mobile adjustments */
+    .turn-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+    
+    .current-bet-display {
+        text-align: center;
+        font-size: 13px;
+    }
+    
+    .player-turn-item {
+        min-width: 85px;
+        padding: 5px 6px;
     }
 }

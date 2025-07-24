@@ -1,0 +1,382 @@
+/* Ability Selection Window Styles */
+.ability-selection-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    transition: opacity 0.3s ease;
+}
+
+.ability-selection-overlay.hidden {
+    display: none;
+}
+
+.ability-selection-window {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: selectionSlideIn 0.4s ease-out;
+}
+
+@keyframes selectionSlideIn {
+    from {
+        transform: translateY(-100px) scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.ability-selection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px 15px;
+    border-bottom: 2px solid #ecf0f1;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.ability-selection-header h3 {
+    margin: 0;
+    font-size: 1.4em;
+    font-weight: 500;
+}
+
+.ability-close-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.ability-close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.ability-selection-body {
+    padding: 25px;
+}
+
+.ability-selection-body p {
+    margin: 0 0 20px 0;
+    color: #34495e;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.drawn-card-info {
+    background: linear-gradient(135deg, #e8f5e8, #d4edda);
+    padding: 12px 15px;
+    border-radius: 8px;
+    border-left: 4px solid #27ae60;
+    margin-bottom: 15px !important;
+    color: #155724 !important;
+    font-weight: 500;
+}
+
+.selection-group {
+    margin-bottom: 25px;
+}
+
+.selection-group:last-child {
+    margin-bottom: 0;
+}
+
+.selection-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+.selection-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.selection-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* Radio Group Styles */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.radio-option:hover {
+    border-color: #3498db;
+    background: #f8fbff;
+}
+
+.radio-option input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+.radio-option input[type="radio"]:checked + span {
+    font-weight: 600;
+    color: #2980b9;
+}
+
+.radio-option:has(input[type="radio"]:checked) {
+    border-color: #3498db;
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+}
+
+/* Card Selection Grid */
+.card-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.card-selection-btn {
+    background: white;
+    border: 2px solid #e1e8ed;
+    border-radius: 10px;
+    padding: 15px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-selection-btn:hover {
+    border-color: #3498db;
+    background: #f8fbff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.card-selection-btn.selected {
+    border-color: #27ae60;
+    background: linear-gradient(135deg, #e8f5e8, #d4edda);
+    box-shadow: 0 4px 16px rgba(39, 174, 96, 0.3);
+    transform: translateY(-2px);
+}
+
+.card-selection-btn.selected::before {
+    content: '✓';
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    background: #27ae60;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.card-name {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.card-selection-btn.selected .card-name {
+    color: #155724;
+}
+
+.card-type {
+    font-size: 11px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+.card-selection-btn.selected .card-type {
+    color: #155724;
+    opacity: 0.8;
+}
+
+/* Special styling for different card types */
+.card-selection-btn:has(.card-type:contains("New")) {
+    border-color: #f39c12;
+}
+
+.card-selection-btn:has(.card-type:contains("New")):hover {
+    border-color: #e67e22;
+    background: #fef9e7;
+}
+
+.card-selection-btn:has(.card-type:contains("Burnt")) {
+    border-color: #e74c3c;
+    opacity: 0.8;
+}
+
+.card-selection-btn:has(.card-type:contains("Burnt")):hover {
+    border-color: #c0392b;
+    background: #fdedec;
+    opacity: 1;
+}
+
+/* Yoink specific styling */
+.hole-card {
+    border-left: 4px solid #9b59b6;
+}
+
+.board-card {
+    border-left: 4px solid #e67e22;
+}
+
+.ability-selection-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-top: 2px solid #ecf0f1;
+    background: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+    gap: 15px;
+}
+
+#ability-confirm-btn {
+    background: linear-gradient(135deg, #27ae60, #229954);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+#ability-confirm-btn:hover {
+    background: linear-gradient(135deg, #229954, #1e8449);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+#ability-confirm-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#ability-cancel-btn {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+#ability-cancel-btn:hover {
+    background: linear-gradient(135deg, #7f8c8d, #6c7b7d);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(127, 140, 141, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ability-selection-window {
+        width: 95%;
+        max-height: 85vh;
+    }
+    
+    .ability-selection-header,
+    .ability-selection-body,
+    .ability-selection-footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .card-selection-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 8px;
+    }
+    
+    .card-selection-btn {
+        min-height: 70px;
+        padding: 12px 8px;
+    }
+    
+    .ability-selection-footer {
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+    
+    #ability-confirm-btn,
+    #ability-cancel-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .ability-selection-header h3 {
+        font-size: 1.2em;
+    }
+    
+    .card-selection-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .radio-group {
+        gap: 8px;
+    }
+    
+    .radio-option {
+        padding: 10px 12px;
+    }
+}
