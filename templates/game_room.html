@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Game Room</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Connection Status -->
+        <div id="connection-status" class="connection-status">
+            <span id="status-text">Connecting...</span>
+        </div>
+
+        <!-- Game Header -->
+        <div class="game-header">
+            <h1>Poker Game</h1>
+        </div>
+
+        <!-- Game Content -->
+        <div class="game-content">
+            <!-- Turn Indicator & Players -->
+            <div class="turn-indicator-section">
+                <div class="turn-header">
+                    <h3>Players & Turn Order</h3>
+                    <div class="current-bet-display">
+                        Current Bet: $<span id="current-bet-amount">0</span>
+                    </div>
+                </div>
+                <div id="players-turn-list" class="players-turn-list">
+                    <!-- Players will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Player's Cards and Abilities -->
+            <div class="player-info-section">
+                <div class="player-cards-subsection">
+                    <h3>Your Cards</h3>
+                    <div id="hole-cards" class="hole-cards-vertical">
+                        <div class="card-placeholder">Card 1</div>
+                        <div class="card-placeholder">Card 2</div>
+                    </div>
+                </div>
+                <div class="abilities-subsection">
+                    <h3>Your Abilities</h3>
+                    <div id="ability-cards" class="abilities-list">
+                        <div class="no-abilities">No abilities available</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Board -->
+            <div class="board-section">
+                <h3>Community Cards</h3>
+                <div id="board-cards" class="card-display">
+                    <div class="card-placeholder">Flop 1</div>
+                    <div class="card-placeholder">Flop 2</div>
+                    <div class="card-placeholder">Flop 3</div>
+                    <div class="card-placeholder">Turn</div>
+                    <div class="card-placeholder">River</div>
+                </div>
+            </div>
+
+            <!-- Game Actions Log -->
+            <div class="actions-section">
+                <div class="actions-header">
+                    <h3>Game Actions</h3>
+                    <div class="game-status-info">
+                        <span>Phase: <span id="current-phase">-----</span></span>
+                        <span>Pot: $<span id="current-pot">0</span></span>
+                    </div>
+                </div>
+                <div id="actions-log" class="actions-log">
+                    <div class="action-item">Waiting for game to start...</div>
+                </div>
+                <!-- Hidden game ID for JavaScript -->
+                <div id="current-game-id" style="display: none;">{{ game_id }}</div>
+            </div>
+        </div>
+
+        <!-- Game Controls -->
+        <div class="game-controls">
+            <button id="leave-game-btn" class="btn btn-danger">Leave Game</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>

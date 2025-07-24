@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Connection Status -->
+        <div id="connection-status" class="connection-status">
+            <span id="status-text">Connecting...</span>
+        </div>
+
+        <!-- Messages/Notifications -->
+        <div id="message-container" class="message-container">
+            <!-- Messages will be populated by JavaScript -->
+        </div>
+
+        <!-- Username Screen -->
+        <div id="username-screen" class="screen active">
+            <div class="card">
+                <h1>Welcome to Poker</h1>
+                <div class="form-group">
+                    <label for="username-input">Enter your username:</label>
+                    <input type="text" id="username-input" placeholder="Your username" maxlength="20" autocomplete="off">
+                    <div id="username-error" class="error-message"></div>
+                </div>
+                <button id="set-username-btn" class="btn btn-primary">Continue</button>
+            </div>
+        </div>
+
+        <!-- Lobby Menu Screen -->
+        <div id="lobby-menu-screen" class="screen">
+            <div class="card">
+                <h1>Poker Lobby</h1>
+                <div class="welcome-message">
+                    Welcome, <span id="player-username"></span>!
+                </div>
+                
+                <div class="lobby-actions">
+                    <button id="create-lobby-btn" class="btn btn-primary btn-large">Create Lobby</button>
+                    <button id="join-lobby-btn" class="btn btn-secondary btn-large">Join Lobby</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Lobby Screen -->
+        <div id="create-lobby-screen" class="screen">
+            <div class="card">
+                <h2>Create New Lobby</h2>
+                
+                <div class="form-group">
+                    <label for="lobby-name-input">Lobby Name (optional):</label>
+                    <input type="text" id="lobby-name-input" placeholder="Your Table" maxlength="30">
+                </div>
+
+                <div class="config-section">
+                    <h3>Game Settings</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="small-blind-input">Small Blind:</label>
+                            <input type="number" id="small-blind-input" value="5" min="1" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="big-blind-input">Big Blind:</label>
+                            <input type="number" id="big-blind-input" value="10" min="2" max="200">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="starting-funds-input">Starting Funds:</label>
+                            <input type="number" id="starting-funds-input" value="1000" min="100" max="10000" step="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="max-players-input">Max Players:</label>
+                            <select id="max-players-input">
+                                <option value="2">2</option>
+                                <option value="4">4</option>
+                                <option value="6">6</option>
+                                <option value="8" selected>8</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button id="create-lobby-confirm-btn" class="btn btn-primary">Create Lobby</button>
+                    <button id="create-lobby-cancel-btn" class="btn btn-secondary">Cancel</button>
+                </div>
+                
+                <div id="create-lobby-error" class="error-message"></div>
+            </div>
+        </div>
+
+        <!-- Join Lobby Screen -->
+        <div id="join-lobby-screen" class="screen">
+            <div class="card">
+                <h2>Join Lobby</h2>
+                
+                <div class="form-group">
+                    <label for="lobby-code-input">Enter 6-letter lobby code:</label>
+                    <input type="text" id="lobby-code-input" placeholder="ABCDEF" maxlength="6" autocomplete="off">
+                    <div class="code-help">Ask your friend for the lobby code</div>
+                    <div id="join-lobby-error" class="error-message"></div>
+                </div>
+
+                <div class="button-group">
+                    <button id="join-lobby-confirm-btn" class="btn btn-primary">Join Lobby</button>
+                    <button id="join-lobby-cancel-btn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lobby Room Screen -->
+        <div id="lobby-room-screen" class="screen">
+            <div class="lobby-header">
+                <h2 id="lobby-title">Lobby</h2>
+                <div class="lobby-code-display">
+                    <span>Code: </span>
+                    <span id="lobby-code-text" class="lobby-code">------</span>
+                    <button id="copy-code-btn" class="btn btn-small">Copy</button>
+                </div>
+            </div>
+
+            <div class="lobby-content">
+                <!-- Players Section -->
+                <div class="players-section">
+                    <h3>Players (<span id="player-count">0</span>/<span id="max-player-count">8</span>)</h3>
+                    <div id="players-list" class="players-list">
+                        <!-- Players will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Game Settings Section -->
+                <div class="settings-section">
+                    <h3>Game Settings</h3>
+                    <div id="game-settings" class="settings-display">
+                        <div class="setting-item">
+                            <span>Small Blind:</span>
+                            <span id="display-small-blind">5</span>
+                        </div>
+                        <div class="setting-item">
+                            <span>Big Blind:</span>
+                            <span id="display-big-blind">10</span>
+                        </div>
+                        <div class="setting-item">
+                            <span>Starting Funds:</span>
+                            <span id="display-starting-funds">1000</span>
+                        </div>
+                    </div>
+
+                    <!-- Host-only settings editor -->
+                    <div id="settings-editor" class="settings-editor" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="edit-small-blind">Small Blind:</label>
+                                <input type="number" id="edit-small-blind" min="1" max="100">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-big-blind">Big Blind:</label>
+                                <input type="number" id="edit-big-blind" min="2" max="200">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="edit-starting-funds">Starting Funds:</label>
+                                <input type="number" id="edit-starting-funds" min="100" max="10000" step="100">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button id="save-settings-btn" class="btn btn-primary btn-small">Save</button>
+                            <button id="cancel-settings-btn" class="btn btn-secondary btn-small">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lobby Actions -->
+            <div class="lobby-actions">
+                <button id="toggle-ready-btn" class="btn btn-secondary">Ready Up</button>
+                <button id="edit-settings-btn" class="btn btn-secondary" style="display: none;">Edit Settings</button>
+                <button id="start-game-btn" class="btn btn-primary btn-large" style="display: none;" disabled>Start Game</button>
+                <button id="leave-lobby-btn" class="btn btn-danger">Leave Lobby</button>
+            </div>
+        </div>
+
+        <!-- Game Room Screen -->
+        <div id="game-room-screen" class="screen">
+            <div class="game-header">
+                <h2>Poker Game</h2>
+                <div class="game-info">
+                    <span>Game ID: <span id="current-game-id">-----</span></span>
+                    <span>Phase: <span id="current-phase">-----</span></span>
+                    <span>Pot: $<span id="current-pot">0</span></span>
+                </div>
+            </div>
+
+            <div class="game-content">
+                <!-- Player's Hole Cards -->
+                <div class="player-cards-section">
+                    <h3>Your Cards</h3>
+                    <div id="hole-cards" class="card-display">
+                        <div class="card-placeholder">Card 1</div>
+                        <div class="card-placeholder">Card 2</div>
+                    </div>
+                </div>
+
+                <!-- Community Board -->
+                <div class="board-section">
+                    <h3>Community Cards</h3>
+                    <div id="board-cards" class="card-display">
+                        <div class="card-placeholder">Flop 1</div>
+                        <div class="card-placeholder">Flop 2</div>
+                        <div class="card-placeholder">Flop 3</div>
+                        <div class="card-placeholder">Turn</div>
+                        <div class="card-placeholder">River</div>
+                    </div>
+                </div>
+
+                <!-- Ability Cards -->
+                <div class="abilities-section">
+                    <h3>Your Abilities</h3>
+                    <div id="ability-cards" class="abilities-list">
+                        <div class="no-abilities">No abilities available</div>
+                    </div>
+                </div>
+
+                <!-- Game Actions Log -->
+                <div class="actions-section">
+                    <h3>Game Actions</h3>
+                    <div id="actions-log" class="actions-log">
+                        <div class="action-item">Waiting for game to start...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Controls -->
+            <div class="game-controls">
+                <button id="leave-game-btn" class="btn btn-danger">Leave Game</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
